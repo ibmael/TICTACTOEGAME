@@ -1,4 +1,4 @@
-import javax.swing.*;
+public import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,78 +71,7 @@ public class TicTacToeGUI extends JFrame implements ActionListener {
             }
         }
         return true;
-    }
-
-    private void displayResult(char symbol) {
-        if (symbol == USER_SYMBOL) {
-            JOptionPane.showMessageDialog(this, "Congratulations! You win!");
-        } else if (symbol == COMPUTER_SYMBOL) {
-            JOptionPane.showMessageDialog(this, "Computer wins! Better luck next time!");
-        } else {
-            JOptionPane.showMessageDialog(this, "It's a draw!");
-        }
-        resetGame();
-    }
-
-    private void userMove(int row, int col) {
-        if (!isValidMove(row, col)) return;
-        board[row][col] = USER_SYMBOL;
-        buttons[row][col].setText(String.valueOf(USER_SYMBOL));
-        if (isWin(USER_SYMBOL)) {
-            displayResult(USER_SYMBOL);
-        } else if (isBoardFull()) {
-            displayResult(' ');
-        } else {
-            userTurn = false;
-            computerMove();
-        }
-    }
-
-    private void computerMove() {
-        int row, col;
-        do {
-            row = (int) (Math.random() * BOARD_SIZE);
-            col = (int) (Math.random() * BOARD_SIZE);
-        } while (!isValidMove(row, col));
-        board[row][col] = COMPUTER_SYMBOL;
-        buttons[row][col].setText(String.valueOf(COMPUTER_SYMBOL));
-        if (isWin(COMPUTER_SYMBOL)) {
-            displayResult(COMPUTER_SYMBOL);
-        } else if (isBoardFull()) {
-            displayResult(' ');
-        } else {
-            userTurn = true;
-        }
-    }
-
-    private void resetGame() {
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = ' ';
-                buttons[i][j].setText("");
-            }
-        }
-        userTurn = true;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (!userTurn) return;
-        JButton buttonClicked = (JButton) e.getSource();
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (buttons[i][j] == buttonClicked) {
-                    userMove(i, j);
-                    return;
-                }
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            TicTacToeGUI game = new TicTacToeGUI();
-            game.setVisible(true);
-        });
-    }
+    } {
+    
+}
 }
