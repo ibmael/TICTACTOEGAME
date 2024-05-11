@@ -16,7 +16,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -239,6 +238,68 @@ public class TicTacToe implements Runnable {
 		}
 	}
 
+	private void checkForTie() {
+		for (int i = 0; i < spaces.length; i++) {
+			if (spaces[i] == null) {
+				return;
+			}
+		}
+		tie = true;
+	}
+
+	private void listenForServerRequest() {
+		Socket socket = null;
+		try {
+			socket = serverSocket.accept();
+			dos = new DataOutputStream(socket.getOutputStream());
+			dis = new DataInputStream(socket.getInputStream());
+			accepted = true;
+			System.out.println("CLIENT HAS REQUESTED TO JOIN, AND WE HAVE ACCEPTED");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean connect() {
+		try {
+			socket = new Socket(ip, port);
+			dos = new DataOutputStream(socket.getOutputStream());
+			dis = new DataInputStream(socket.getInputStream());
+			accepted = true;
+		} catch (IOException e) {
+			System.out.println("Unable to connect to the address: " + ip + ":" + port + " | Starting a server");
+			return false;
+		}
+		System.out.println("Successfully connected to the server.");
+		return true;
+	}
+
+	private void initializeServer() {
+		try {
+			serverSocket = new ServerSocket(port, 8, InetAddress.getByName(ip));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		yourTurn = true;
+		circle = false;
+	}
+
+	private void loadImages() {
+		try {
+			board = ImageIO.read(getClass().getResourceAsStream("/board.png"));
+			redX = ImageIO.read(getClass().getResourceAsStream("/redX.png"));
+			redCircle = ImageIO.read(getClass().getResourceAsStream("/redCircle.png"));
+			blueX = ImageIO.read(getClass().getResourceAsStream("/blueX.png"));
+			blueCircle = ImageIO.read(getClass().getResourceAsStream("/blueCircle.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public static void main(String[] args) {
+		TicTacToe ticTacToe = new TicTacToe();
+	}
 
 	private class Painter extends JPanel implements MouseListener {
 		private static final long serialVersionUID = 1L;
